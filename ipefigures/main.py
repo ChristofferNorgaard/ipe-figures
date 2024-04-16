@@ -15,6 +15,8 @@ from .picker import pick
 import pyperclip
 from appdirs import user_config_dir
 
+warnings.filterwarnings("ignore")
+
 logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
 log = logging.getLogger('ipe-figures')
 
@@ -23,7 +25,7 @@ def ipe(path):
         # leaving a subprocess running after interpreter exit raises a
         # warning in Python3.7+
         warnings.simplefilter("ignore", ResourceWarning)
-        subprocess.Popen(['/usr/bin/ipe', ' -sheet tkiz.isy ' + str(path)])
+        subprocess.Popen(['/usr/bin/ipe', '-sheet', 'tkiz.isy', str(path)])
 
 def indent(text, indentation=0):
     lines = text.split('\n');
@@ -59,14 +61,14 @@ if not user_dir.is_dir():
     user_dir.mkdir()
 
 roots_file =  user_dir / 'roots'
-#template = user_dir / 'template.svg'
+#template = user_dir / 'template.ipe'
 config = user_dir / 'config.py'
 
 if not roots_file.is_file():
     roots_file.touch()
 
 #if not template.is_file():
-#    source = str(Path(__file__).parent / 'template.svg')
+#    source = str(Path(__file__).parent / 'template.ipe')
 #    destination = str(template)
 #    copy(source, destination)
 
@@ -119,8 +121,8 @@ def watch(daemon):
 def maybe_recompile_figure(filepath):
     filepath = Path(filepath)
     # A file has changed
-    if filepath.suffix != '.svg':
-        log.debug('File has changed, but is nog an svg {}'.format(
+    if filepath.suffix != '.ipe':
+        log.debug('File has changed, but is nog an ipe {}'.format(
             filepath.suffix))
         return
 
@@ -164,7 +166,7 @@ def maybe_recompile_figure(filepath):
     log.debug('Running command:')
     log.debug(textwrap.indent(' '.join(str(e) for e in command), '    '))
 
-    # Recompile the svg file
+    # Recompile the ipe file
     completed_process = subprocess.run(command)
 
     if completed_process.returncode != 0:
@@ -298,8 +300,8 @@ def edit(root):
 
     figures = Path(root).absolute()
 
-    # Find svg files and sort them
-    files = figures.glob('*.svg')
+    # Find ipe files and sort them
+    files = figures.glob('*.ipe')
     files = sorted(files, key=lambda f: f.stat().st_mtime, reverse=True)
 
     # Open a selection dialog using a gui picker like rofi
