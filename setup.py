@@ -15,17 +15,17 @@ if find_executable("fswatch") is None:
         dependencies.append("inotify")
     else:
         raise ValueError(
-                "inkscape-figures needs fswatch to run on MacOS. You "
+                "ipe-figures needs fswatch to run on MacOS. You "
                 "can install it using `brew install fswatch`"
                 )
 
 setup(
-    name="inkscape-figures",
+    name="ipe-figures",
     version="1.0.7",
-    description="Script for managing inkscape figures",
+    description="Script for managing ipe figures",
     long_description=readme(),
     long_description_content_type="text/markdown",
-    url="https://github.com/gillescastel/inkscape-figures",
+    url="https://github.com/gillescastel/ipe-figures",
     author="Gilles Castel",
     author_email="gilles@castel.dev",
     license="MIT",
@@ -34,8 +34,8 @@ setup(
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.7",
     ],
-    packages=['inkscapefigures'],
-    scripts=['bin/inkscape-figures'],
+    packages=['ipefigures'],
+    scripts=['bin/ipe-figures'],
     install_requires=dependencies,
     include_package_data=True
 )
